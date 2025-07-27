@@ -1,0 +1,5243 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Welcome</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <section class="card text-center">
+            <h2>Welcome to TaskFlow!</h2>
+            <p>Your simple solution for managing tasks and projects. Designed for small business owners and freelancers.</p>
+            <p>This is a wireframe prototype showcasing core functionalities:</p>
+            <ul>
+                <li>User Registration/Login</li>
+                <li>Dashboard (overview)</li>
+                <li>Project Management (list, view, edit)</li>
+                <li>Task Management (list, view, edit, complete)</li>
+                <li>User Settings</li>
+            </ul>
+            <div class="btn-group mt-20">
+                <a href="signup.html" class="button">Get Started (Sign Up)</a>
+                <a href="login.html" class="button btn-secondary">Already a User? (Log In)</a>
+            </div>
+            <p class="mt-20">Or explore the prototype screens directly:</p>
+            <div class="btn-group">
+                <a href="dashboard.html" class="button btn-secondary">View Dashboard</a>
+                <a href="projects.html" class="button btn-secondary">View Projects</a>
+                <a href="tasks.html" class="button btn-secondary">View Tasks</a>
+                <a href="settings.html" class="button btn-secondary">View Settings</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Dashboard</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Dashboard Overview Section -->
+        <section>
+            <h2>Dashboard Overview</h2>
+            <div class="dashboard-grid">
+                <div class="card dashboard-card">
+                    <h3>Total Projects</h3>
+                    <p>7</p>
+                    <a href="projects.html" class="button btn-secondary">View Projects</a>
+                </div>
+                <div class="card dashboard-card">
+                    <h3>Tasks Due Soon</h3>
+                    <p>3</p>
+                    <a href="tasks.html" class="button btn-secondary">View Tasks</a>
+                </div>
+                <div class="card dashboard-card">
+                    <h3>Completed Tasks (Today)</h3>
+                    <p>1</p>
+                    <a href="tasks.html" class="button btn-secondary">View History</a>
+                </div>
+                <div class="card dashboard-card">
+                    <h3>Overdue Tasks</h3>
+                    <p>2</p>
+                    <a href="tasks.html" class="button btn-danger">View Overdue</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recent Activity Section -->
+        <section class="mt-20">
+            <h2>Recent Activity</h2>
+            <div class="card">
+                <ul class="item-list">
+                    <li>
+                        <div>
+                            <h3>Task Completed: <a href="task-detail.html">"Review Q4 Marketing Plan"</a></h3>
+                            <p>Project: Marketing Campaign</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">View</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3>New Project Added: <a href="project-detail.html">"Website Redesign Phase 1"</a></h3>
+                            <p>Date: 2023-11-20</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">View</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3>Task Due: <a href="task-detail.html">"Send client invoice"</a></h3>
+                            <p>Project: Client A Project | Due: Today</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">View</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Quick Actions Section -->
+        <section class="mt-20">
+            <h2>Quick Actions</h2>
+            <div class="card btn-group">
+                <a href="#" class="button">Add New Task</a>
+                <a href="#" class="button">Create New Project</a>
+                <a href="#" class="button btn-secondary">Generate Report</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Projects</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Projects List Header -->
+        <section class="flex-container">
+            <h2>Your Projects</h2>
+            <a href="#" class="button">Add New Project</a>
+        </section>
+
+        <!-- Projects List Section -->
+        <section>
+            <div class="card">
+                <ul class="item-list">
+                    <li>
+                        <div>
+                            <h3><a href="project-detail.html" class="item-title">Marketing Campaign Q4 2023</a></h3>
+                            <p>Status: In Progress | Due: 2023-12-31</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button class="btn-danger">Delete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="project-detail.html" class="item-title">New Website Redesign - Phase 1</a></h3>
+                            <p>Status: Planning | Due: 2024-01-15</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button class="btn-danger">Delete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="project-detail.html" class="item-title">Client A - Annual Report</a></h3>
+                            <p>Status: Completed | Completed: 2023-11-10</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">View</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="project-detail.html" class="item-title">Internal Tool Development</a></h3>
+                            <p>Status: On Hold | Due: TBD</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button class="btn-danger">Delete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="project-detail.html" class="item-title">Social Media Content Calendar</a></h3>
+                            <p>Status: In Progress | Due: 2023-11-30</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button class="btn-danger">Delete</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Project Detail</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Project Details Header -->
+        <section class="flex-container">
+            <h2>Project: Marketing Campaign Q4 2023</h2>
+            <div class="btn-group">
+                <a href="#" class="button btn-secondary">Edit Project</a>
+                <button class="button btn-danger">Delete Project</button>
+            </div>
+        </section>
+
+        <!-- Project Overview Section -->
+        <section class="card">
+            <h3>Overview</h3>
+            <p><strong>Description:</strong> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p><strong>Status:</strong> In Progress</p>
+            <p><strong>Start Date:</strong> 2023-10-01</p>
+            <p><strong>Due Date:</strong> 2023-12-31</p>
+            <p><strong>Client:</strong> Acme Corp</p>
+        </section>
+
+        <!-- Project Tasks Section -->
+        <section class="mt-20">
+            <div class="flex-container">
+                <h3>Tasks for this Project</h3>
+                <a href="#" class="button">Add New Task</a>
+            </div>
+            <div class="card">
+                <ul class="item-list">
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Develop Q4 content calendar</a></h3>
+                            <p>Due: 2023-11-25 | Status: In Progress</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Review Q4 marketing plan with team</a></h3>
+                            <p>Due: 2023-11-20 (Overdue) | Status: Overdue</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Design social media graphics</a></h3>
+                            <p>Due: 2023-12-05 | Status: Not Started</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Launch Q4 email campaign</a></h3>
+                            <p>Due: 2023-12-15 | Status: Not Started</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                </ul>
+                <div class="text-center mt-20">
+                    <a href="tasks.html" class="button btn-secondary">View All Project Tasks</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Tasks</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Tasks List Header -->
+        <section class="flex-container">
+            <h2>Your Tasks</h2>
+            <a href="#" class="button">Add New Task</a>
+        </section>
+
+        <!-- Tasks Filter/Sort Section (Placeholder) -->
+        <section class="card">
+            <h3>Filter & Sort (Placeholder)</h3>
+            <form>
+                <div class="form-group">
+                    <label for="projectFilter">Filter by Project:</label>
+                    <input type="text" id="projectFilter" placeholder="e.g., Marketing Campaign">
+                </div>
+                <div class="form-group">
+                    <label for="statusFilter">Filter by Status:</label>
+                    <input type="text" id="statusFilter" placeholder="e.g., In Progress, Completed">
+                </div>
+                <div class="form-group">
+                    <label for="dueDateSort">Sort by Due Date:</label>
+                    <input type="text" id="dueDateSort" placeholder="Ascending/Descending">
+                </div>
+                <button type="submit" class="btn-secondary">Apply Filters</button>
+            </form>
+        </section>
+
+        <!-- Tasks List Section -->
+        <section class="mt-20">
+            <div class="card">
+                <ul class="item-list">
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Send client invoice</a></h3>
+                            <p>Project: Client A Project | Due: 2023-11-21 | Status: Due Today</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Follow up on partnership proposal</a></h3>
+                            <p>Project: Business Development | Due: 2023-11-22 | Status: In Progress</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Update website content (About Us page)</a></h3>
+                            <p>Project: Website Redesign Phase 1 | Due: 2023-11-20 | Status: Overdue</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Prepare quarterly financial report</a></h3>
+                            <p>Project: Internal Operations | Due: 2023-12-01 | Status: Not Started</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Schedule team brainstorming session</a></h3>
+                            <p>Project: Marketing Campaign Q4 2023 | Due: 2023-11-23 | Status: In Progress</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h3><a href="task-detail.html" class="item-title">Research competitor strategies</a></h3>
+                            <p>Project: Business Development | Due: 2023-11-25 | Status: Not Started</p>
+                        </div>
+                        <div class="item-actions">
+                            <button class="btn-secondary">Edit</button>
+                            <button>Complete</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Task Detail</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1: px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Task Details Header -->
+        <section class="flex-container">
+            <h2>Task: Send client invoice</h2>
+            <div class="btn-group">
+                <a href="#" class="button btn-secondary">Edit Task</a>
+                <button class="button btn-danger">Delete Task</button>
+            </div>
+        </section>
+
+        <!-- Task Overview Section -->
+        <section class="card">
+            <h3>Overview</h3>
+            <p><strong>Description:</strong> Prepare and send the monthly invoice to Client A for services rendered in November.</p>
+            <p><strong>Project:</strong> <a href="project-detail.html">Client A Project</a></p>
+            <p><strong>Status:</strong> In Progress</p>
+            <p><strong>Priority:</strong> High</p>
+            <p><strong>Due Date:</strong> 2023-11-21 (Due Today)</p>
+            <p><strong>Assigned To:</strong> User Name</p>
+            <div class="btn-group mt-20">
+                <button class="button">Mark as Complete</button>
+                <button class="button btn-secondary">Add Comment</button>
+            </div>
+        </section>
+
+        <!-- Task History/Comments Section (Placeholder) -->
+        <section class="mt-20">
+            <h3>History & Comments</h3>
+            <div class="card">
+                <ul class="item-list">
+                    <li>
+                        <div>
+                            <h4>Comment from John Doe (2023-11-19)</h4>
+                            <p>Started drafting the invoice. Waiting for final approval on billable hours.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <h4>Task Status Change (2023-11-15)</h4>
+                            <p>Status changed from "Not Started" to "In Progress".</p>
+                        </div>
+                    </li>
+                </ul>
+                <div class="mt-20">
+                    <form>
+                        <div class="form-group">
+                            <label for="comment">Add a Comment:</label>
+                            <textarea id="comment" placeholder="Enter your comment here..."></textarea>
+                        </div>
+                        <button type="submit">Submit Comment</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Settings</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container">
+        <!-- Settings Header -->
+        <section>
+            <h2>Settings</h2>
+        </section>
+
+        <!-- User Profile Settings -->
+        <section class="card">
+            <h3>User Profile</h3>
+            <form>
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" value="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" value="john.doe@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="timezone">Timezone:</label>
+                    <input type="text" id="timezone" value="(UTC-05:00) Eastern Time (US & Canada)">
+                </div>
+                <button type="submit">Update Profile</button>
+            </form>
+        </section>
+
+        <!-- Password Settings -->
+        <section class="card mt-20">
+            <h3>Change Password</h3>
+            <form>
+                <div class="form-group">
+                    <label for="currentPassword">Current Password:</label>
+                    <input type="password" id="currentPassword">
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">New Password:</label>
+                    <input type="password" id="newPassword">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm New Password:</label>
+                    <input type="password" id="confirmPassword">
+                </div>
+                <button type="submit">Change Password</button>
+            </form>
+        </section>
+
+        <!-- Notification Settings -->
+        <section class="card mt-20">
+            <h3>Notifications</h3>
+            <form>
+                <div class="form-group">
+                    <label><input type="checkbox" checked> Email notifications for new tasks</label>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox"> Email notifications for overdue tasks</label>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" checked> In-app notifications for task updates</label>
+                </div>
+                <button type="submit">Save Notification Settings</button>
+            </form>
+        </section>
+
+        <!-- Account Management (Placeholder) -->
+        <section class="card mt-20">
+            <h3>Account Management</h3>
+            <p>Need to manage your subscription or delete your account?</p>
+            <div class="btn-group">
+                <a href="#" class="button btn-secondary">Manage Subscription</a>
+                <button class="button btn-danger">Delete Account</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Login</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container text-center">
+        <!-- Login Form Section -->
+        <section class="card">
+            <h2>Login to TaskFlow</h2>
+            <form action="dashboard.html" method="get"> <!-- Using GET for prototype navigation -->
+                <div class="form-group">
+                    <label for="username">Email or Username:</label>
+                    <input type="text" id="username" name="username" placeholder="your@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="********" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p class="mt-20">Don't have an account? <a href="signup.html">Sign Up</a></p>
+            <p><a href="#">Forgot Password?</a></p>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Sign Up</title>
+    <style>
+        /* Common styles for all prototype pages */
+        /* --- CSS Variables --- */
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --background-color: #f8f9fa;
+            --surface-color: #ffffff;
+            --border-color: #dee2e6;
+            --text-color: #212529;
+            --light-text-color: #495057;
+            --danger-color: #dc3545;
+        }
+
+        /* --- Base Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        *, *::before, *::after {
+            box-sizing: inherit;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            margin-top: 0;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            color: var(--text-color);
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1em;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* --- Layout --- */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* For positioning nav toggle */
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+            color: white;
+        }
+
+        .main-nav ul {
+            display: flex;
+            justify-content: center;
+            background-color: var(--secondary-color);
+            padding: 10px 0;
+            flex-wrap: wrap; /* Allow wrapping for smaller screens */
+        }
+
+        .main-nav li {
+            margin: 0 15px;
+        }
+
+        .main-nav a {
+            color: white;
+            padding: 5px 10px;
+            display: block;
+            border-radius: 4px;
+            white-space: nowrap; /* Prevent breaking nav links */
+        }
+
+        .main-nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile Nav Toggle (Hamburger Menu) */
+        .nav-toggle {
+            display: none; /* Hidden by default for desktop */
+            cursor: pointer;
+            font-size: 1.8em;
+            color: white;
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1001; /* Ensure it's above other elements if needed */
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-nav-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto; /* Enable scrolling for many links */
+        }
+
+        .mobile-nav-overlay.open {
+            display: flex;
+        }
+
+        .mobile-nav-overlay ul {
+            text-align: center;
+            width: 100%; /* Ensure ul takes full width inside overlay */
+        }
+
+        .mobile-nav-overlay li {
+            margin: 15px 0;
+        }
+
+        .mobile-nav-overlay a {
+            color: white;
+            font-size: 1.4em;
+            padding: 10px 20px;
+            display: block;
+            border-radius: 5px;
+            transition: background-color 0.2s ease;
+        }
+
+        .mobile-nav-overlay a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .close-nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* --- Forms --- */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: var(--text-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1em;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            width: 100%; /* Make buttons full width in forms */
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+        }
+        .btn-group button, .btn-group a.button {
+            flex-grow: 1;
+            width: auto; /* Override 100% width for individual buttons in a group */
+        }
+        a.button { /* Style for anchor tags that look like buttons */
+            display: inline-block;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+            text-decoration: none;
+        }
+        a.button:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        a.button.btn-secondary {
+            background-color: var(--secondary-color);
+        }
+        a.button.btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+
+        /* --- Lists (Projects, Tasks) --- */
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping of content */
+        }
+
+        .item-list li > div { /* For content within list item */
+            flex-grow: 1;
+        }
+
+        .item-list li h3 {
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .item-list li p {
+            margin-bottom: 0;
+            font-size: 0.9em;
+            color: var(--light-text-color);
+        }
+
+        .item-list li a.item-title {
+            color: var(--primary-color);
+            font-weight: bold;
+            text-decoration: none;
+            display: block; /* Make title clickable block */
+        }
+
+        .item-list li a.item-title:hover {
+            text-decoration: underline;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: 15px; /* Space from content */
+            flex-shrink: 0; /* Prevent shrinking when content wraps */
+        }
+
+        .item-actions button {
+            padding: 8px 12px;
+            font-size: 0.9em;
+            width: auto; /* Override 100% width */
+        }
+
+        /* --- Dashboard Specific --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-card {
+            text-align: center;
+        }
+
+        .dashboard-card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .dashboard-card p {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: var(--text-color);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: var(--light-text-color);
+            font-size: 0.9em;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- Utility Classes --- */
+        .text-center { text-align: center; }
+        .mt-20 { margin-top: 20px; }
+        .mb-20 { margin-bottom: 20px; }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .flex-container h2 {
+            margin-bottom: 0;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .main-nav {
+                display: none; /* Hide desktop nav */
+            }
+            header {
+                text-align: left;
+                padding: 15px;
+            }
+            header h1 {
+                display: inline-block;
+            }
+            .nav-toggle {
+                display: block; /* Show hamburger icon */
+            }
+            .container {
+                margin: 10px auto;
+                padding: 0 10px;
+            }
+            form {
+                max-width: 100%;
+            }
+            .item-actions {
+                margin-left: 0; /* Remove left margin for better mobile layout */
+                margin-top: 10px; /* Add top margin when stacked */
+                width: 100%; /* Make actions take full width */
+                justify-content: flex-end; /* Align actions to the right */
+            }
+            .item-list li {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-group button, .btn-group a.button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.5em;
+            }
+            button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            a.button {
+                padding: 12px 20px;
+                font-size: 1.1em;
+            }
+            .item-actions button {
+                padding: 10px 15px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>TaskFlow</h1>
+            <div class="nav-toggle" id="navToggle">&#9776;</div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Section (Desktop) -->
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </nav>
+
+    <!-- Mobile Navigation Overlay (Hidden by default) -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay">
+        <div class="close-nav" id="closeNav">&times;</div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="tasks.html">Tasks</a></li>
+            <li><a href="settings.html">Settings</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content Section -->
+    <main class="container text-center">
+        <!-- Sign Up Form Section -->
+        <section class="card">
+            <h2>Create Your TaskFlow Account</h2>
+            <form action="dashboard.html" method="get"> <!-- Using GET for prototype navigation -->
+                <div class="form-group">
+                    <label for="fullName">Full Name:</label>
+                    <input type="text" id="fullName" name="fullName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address:</label>
+                    <input type="email" id="email" name="email" placeholder="your@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="********" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="********" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p class="mt-20">Already have an account? <a href="login.html">Login Here</a></p>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2023 TaskFlow. All rights reserved.</p>
+        <p><small>This is a prototype. For documentation, please refer to the project specifications.</small></p>
+    </footer>
+
+    <!-- JavaScript Section -->
+    <script>
+        // Global JS for mobile navigation toggle (duplicated for self-contained file)
+        document.addEventListener('DOMContentLoaded', () => {
+            const navToggle = document.getElementById('navToggle');
+            const mobileNavOverlay = document.getElementById('mobileNavOverlay');
+            const closeNav = document.getElementById('closeNav');
+
+            if (navToggle && mobileNavOverlay && closeNav) {
+                navToggle.addEventListener('click', () => {
+                    mobileNavOverlay.classList.add('open');
+                });
+
+                closeNav.addEventListener('click', () => {
+                    mobileNavOverlay.classList.remove('open');
+                });
+
+                // Close nav when a link is clicked inside the overlay
+                mobileNavOverlay.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        mobileNavOverlay.classList.remove('open');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+```
